@@ -4,20 +4,37 @@
         <meta charset="utf-8" />
         <title>Mokemon!</title>
         <script src="./script.js"></script>
+        <link rel="stylesheet" href="./styles.css"></link>
     </head>
     <body>
-        <h1>Mokemon! 🔥💧🌱</h1>
+
         <section id="seleccionar-mascota">
-            <h2>Elige tu mascota:</h2>
-            <label for="paltamon">Paltamon</label>
-            <input type="radio" name="mascota" id="paltamon" />
-            <label for="watemon">Watemon</label>
-            <input type="radio" name="mascota" id="watemon" />
-            <label for="fuemon">Fuemon</label>
-            <input type="radio" name="mascota" id="fuemon" />
+
+            <h1 class="titulo">Mokemon</h1>
+
+            <h2 class="subtitulo">Elige tu mascota:</h2>
+
+            <div class="tarjetas">
+                <label class="tarjetas-mokemon" for="paltamon">
+                    <p>Paltamon</p>
+                    <img src="./assets/paltamon.png" alt="">    
+                </label>
+                <label class="tarjetas-mokemon" for="watemon">
+                    <p>Watemon</p>
+                    <img src="./assets/watemon.png" alt="">    
+                </label>
+                <label class="tarjetas-mokemon" for="fuemon">
+                    <p>Fuemon</p>
+                    <img src="./assets/fuemon.png" alt="">    
+                </label>
+            </div>
+
             <button id="boton-mascota">Seleccionar</button>
+
         </section>
+
         <section id="seleccionar-ataque">
+            <h1>Mokemon! 🔥💧🌱</h1>
             <h2>Elige tu ataque:</h2>
             <p>Tu mascota <span id="mascota-jugador"></span> tiene <span id="vidas-jugador">3</span> vidas</p>
             <p>La mascota <span id="mascota-enemigo"></span> del enemigo tiene <span id="vidas-enemigo">3</span> vidas</p>
@@ -27,10 +44,13 @@
             <button id="boton-tierra">Tierra 🌱</button>
             </p>
         </section>
+
         <section id="mensajes">
         </section>
+
         <section id="reiniciar">
             <button id="boton-reiniciar">Reiniciar</button>
         </section>
+
     </body>
 </html>
