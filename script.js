@@ -41,7 +41,7 @@ function seleccionarMascotaJugador() {
     
     //cuando se seleeciona una mascota se muestra la sección selecciona ataque
     let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque');
-    sectionSeleccionarAtaque.style.display = 'block';
+    sectionSeleccionarAtaque.style.display = 'flex';
     
     //se guarda en variables los labels con los nombres
     let inputPaltamon = document.getElementById('paltamon');
@@ -146,24 +146,27 @@ function revisarVidas() {
 }
 
 function crearMensaje(resultado) {
-    let sectionMensajes = document.getElementById('mensajes');
-    
-    //se crea una elemento de tipo párrafo
-    let parrafo = document.createElement('p');
-    parrafo.innerHTML = 'Tu mascota atacó con ' + ataqueJugador + ', las mascota del enemigo atacó con ' + ataqueEnemigo + '- ' + resultado;
+    let sectionMensajes = document.getElementById('resultado');
+    let ataquesDelJugador = document.getElementById('ataques-del-jugador');
+    let ataquesDelEnemigo = document.getElementById('ataques-del-enemigo');
+
+    let nuevoAtaqueDelJugador = document.createElement('p');
+    let nuevoAtaqueDelEnemigo = document.createElement('p');
+
+    sectionMensajes.innerHTML = resultado;
+    nuevoAtaqueDelJugador.innerHTML = ataqueJugador;
+    nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo;
 
     //función que le dice a la sección mensaje que muestre el párrafo que se creó.
-    sectionMensajes.appendChild(parrafo);
+    ataquesDelJugador.appendChild(nuevoAtaqueDelJugador);
+    ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo);
 }
 
 function crearMensajeFinal(resultadoFinal) {
-    let sectionMensajes = document.getElementById('mensajes');
-    
-    //en la sección mensaje ahora creamos un párrafo y muestra el mensaje final que trae del parámetro resultadoFinal
-    let parrafo = document.createElement('p');
-    parrafo.innerHTML = resultadoFinal;
 
-    sectionMensajes.appendChild(parrafo);
+    let sectionMensajes = document.getElementById('resultado');
+
+    seccionMensajes.innerHTML = resultadoFinal;
 
     //se deshabilitan los botones de ataques
     let botonFuego = document.getElementById('boton-fuego');

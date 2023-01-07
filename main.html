@@ -15,18 +15,24 @@
             <h2 class="subtitulo">Elige tu mascota:</h2>
 
             <div class="tarjetas">
+                <input type="radio" name="mascota" id="paltamon"/>
                 <label class="tarjetas-mokemon" for="paltamon">
                     <p>Paltamon</p>
                     <img src="./assets/paltamon.png" alt="">    
                 </label>
+
+                <input type="radio" name="mascota" id="watemon"/>
                 <label class="tarjetas-mokemon" for="watemon">
                     <p>Watemon</p>
                     <img src="./assets/watemon.png" alt="">    
                 </label>
+
+                <input type="radio" name="mascota" id="fuemon"/>
                 <label class="tarjetas-mokemon" for="fuemon">
                     <p>Fuemon</p>
                     <img src="./assets/fuemon.png" alt="">    
                 </label>
+
             </div>
 
             <button id="boton-mascota">Seleccionar</button>
@@ -34,22 +40,41 @@
         </section>
 
         <section id="seleccionar-ataque">
-            <h1>Mokemon! 🔥💧🌱</h1>
-            <h2>Elige tu ataque:</h2>
-            <p>Tu mascota <span id="mascota-jugador"></span> tiene <span id="vidas-jugador">3</span> vidas</p>
-            <p>La mascota <span id="mascota-enemigo"></span> del enemigo tiene <span id="vidas-enemigo">3</span> vidas</p>
-            <p>
-            <button id="boton-fuego">Fuego 🔥</button>
-            <button id="boton-agua">Agua 💧</button>
-            <button id="boton-tierra">Tierra 🌱</button>
-            </p>
-        </section>
 
-        <section id="mensajes">
-        </section>
+            <h1 class="titulo">Mokemon</h1>
 
-        <section id="reiniciar">
-            <button id="boton-reiniciar">Reiniciar</button>
+            <h2 class="subtitulo">Elige tu ataque:</h2>
+
+            <div class="tarjetas-ataque">
+                <button class="btn-ataque fuego" id="boton-fuego">Fuego 🔥</button>
+                <button class="btn-ataque agua" id="boton-agua">Agua 💧</button>
+                <button class="btn-ataque tierra" id="boton-tierra">Tierra 🌱</button>
+            </div>
+
+            <div id="mensajes">
+                <p id="resultado">Mucha suerte</p>
+
+                <section id="reiniciar">
+                    <button id="boton-reiniciar">Reiniciar</button>
+                </section>
+            </div>
+
+            <div class="ataques">
+
+                <div class="ataques-jugador">
+                    <p id="vidas-jugador">3</p>
+                    <p id="mascota-jugador"></p>
+                    <div id="ataques-del-jugador"></div>
+                </div>
+
+                <div class="ataques-enemigo">
+                    <p id="vidas-enemigo">3</p>
+                    <p id="mascota-enemigo"></p>
+                    <div id="ataques-del-enemigo"></div>
+                </div>
+
+            </div>
+
         </section>
 
     </body>

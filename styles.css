@@ -25,7 +25,7 @@ body {
 
 }
 
-.tarjetas {
+.tarjetas, .tarjetas-ataque {
     display: flex;
     gap: 10px;
 }
@@ -71,11 +71,90 @@ body {
     border: 3px solid;
 }
 
+#boton-mascota:active {
+    background-color: pink;
+}
+
 input {
     display: none;
 }
 
-input:checked label {
-    background-color: bisque;
-    color: red;
+input:checked + label {
+    background-color: pink;
+}
+
+#seleccionar-ataque {
+    flex-direction: column;
+    align-items: center;
+}
+
+.btn-ataque {
+    width: 100px;
+    height: 40px;
+    border-radius: 20px;
+    background: transparent;
+    border: 2px solid white;
+    color: azure;
+    font-family: 'Orbitron', sans-serif;
+    margin-top: 30px;
+    border-color: #E98EAD;
+    margin: 10px;
+}
+
+#btn-ataque:hover {
+    cursor: pointer;
+    border-color: #FFADBC;
+    border: 3px solid;
+    box-shadow: 5px 5px 5px black;
+}
+
+.fuego {
+    background: darkorange;
+}
+
+.agua {
+    background: cornflowerblue;
+}
+
+.tierra {
+    background: darkgoldenrod;
+}
+
+#mensajes {
+    width: 280px;
+    background-color: pink;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+#boton-reiniciar {
+    border: none;
+    color:#3A4F7A;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.ataques {
+    display: grid;
+    grid-template-columns: 100px 100px;
+}
+
+#vidas-jugador, #vidas-enemigo {
+    font-size: 32px;
+    margin-bottom: 0;
+}
+
+.ataques-jugador, .ataques-enemigo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media (max-width: 360px) {
+    .tarjetas, .tarjetas-ataque {
+        flex-direction: column;
+    }
 }
