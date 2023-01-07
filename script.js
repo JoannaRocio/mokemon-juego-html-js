@@ -1,24 +1,19 @@
-//variables globales
 let ataqueJugador;
 let ataqueEnemigo;
 let vidasJugador = 3;
 let vidasEnemigo = 3;
 
-//primer función que se ejecuta al iniciar del juego
 function iniciarJuego() {
-    //desde el DOM le decimos que oculte la sección selecionar-ataque
+    
     let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque');
     sectionSeleccionarAtaque.style.display = 'none';
 
-    //se oculta el botón de reinicio
     let sectionReiniciar = document.getElementById('reiniciar');
     sectionReiniciar.style.display = 'none';
     
-    //cuando se clickee el botón de seleccionar, se llama a la funcion seleccionarMascotaJugador 
     let botonMascotaJugador = document.getElementById('boton-mascota');
     botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador);
 
-    //cuando se ejecute un ataque se llaman a las funciones correspondientes
     let botonFuego = document.getElementById('boton-fuego');
     botonFuego.addEventListener('click', ataqueFuego);
 
@@ -28,28 +23,22 @@ function iniciarJuego() {
     let botonTierra = document.getElementById('boton-tierra');
     botonTierra.addEventListener('click', ataqueTierra);
 
-    //botón para reiniciar el juego
     let botonReiniciar = document.getElementById('boton-reiniciar');
     botonReiniciar.addEventListener('click', reiniciarJuego);
 }
 
 function seleccionarMascotaJugador() {
 
-    //cuando se elije la mascota, se oculta la sección de seleccionar-mascota
     let sectionSeleccionarMascota = document.getElementById('seleccionar-mascota');
     sectionSeleccionarMascota.style.display = 'none';
     
-    //cuando se seleeciona una mascota se muestra la sección selecciona ataque
     let sectionSeleccionarAtaque = document.getElementById('seleccionar-ataque');
     sectionSeleccionarAtaque.style.display = 'flex';
     
-    //se guarda en variables los labels con los nombres
     let inputPaltamon = document.getElementById('paltamon');
     let inputWatemon = document.getElementById('watemon');
     let inputFuemon = document.getElementById('fuemon');
     let spanMascotaJugador = document.getElementById('mascota-jugador');
-    
-    //dependiendo del radiobutton elegido, se guarda el nombre de la mascota con innerHTML que lee el texto que haya dentro del label y muestra el nombre elegido en el span mascota-jugador
 
     if (inputPaltamon.checked) {
         spanMascotaJugador.innerHTML = 'Paltamon';
@@ -77,7 +66,6 @@ function seleccionarMascotaEnemigo() {
     }
 }
 
-//funciones que se ejecutan cuando se apreta el botón de ataque
 function ataqueFuego() {
     ataqueJugador = 'FUEGO';
     ataqueAleatorioEnemigo();
@@ -105,7 +93,6 @@ function ataqueAleatorioEnemigo() {
     combate()
 }
 
-//funcion con cálculo para generar un número random entre 1 y 3
 function aleatorio(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
@@ -157,18 +144,16 @@ function crearMensaje(resultado) {
     nuevoAtaqueDelJugador.innerHTML = ataqueJugador;
     nuevoAtaqueDelEnemigo.innerHTML = ataqueEnemigo;
 
-    //función que le dice a la sección mensaje que muestre el párrafo que se creó.
     ataquesDelJugador.appendChild(nuevoAtaqueDelJugador);
     ataquesDelEnemigo.appendChild(nuevoAtaqueDelEnemigo);
 }
 
 function crearMensajeFinal(resultadoFinal) {
 
-    let sectionMensajes = document.getElementById('resultado');
+    let seccionMensajes = document.getElementById('resultado');
 
     seccionMensajes.innerHTML = resultadoFinal;
 
-    //se deshabilitan los botones de ataques
     let botonFuego = document.getElementById('boton-fuego');
     botonFuego.disabled = true;
     let botonAgua = document.getElementById('boton-agua');
@@ -176,15 +161,13 @@ function crearMensajeFinal(resultadoFinal) {
     let botonTierra = document.getElementById('boton-tierra');
     botonTierra.disabled = true;
 
-    //se muestra el botón de reinicio
     let sectionReiniciar = document.getElementById('reiniciar');
     sectionReiniciar.style.display = 'block';
 }
 
 function reiniciarJuego() {
-    //objeto location se refiere al lugar donde estamos ubicados, con el método reload refresca la página.
+    
     location.reload();
 }
 
-//este evento al terminar de cargar el html llama a la funcion IniciarJuego
 window.addEventListener('load', iniciarJuego);
