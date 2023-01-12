@@ -13,25 +13,7 @@
 
             <h2 class="subtitulo">Elige tu mascota:</h2>
 
-            <div class="tarjetas">
-                <input type="radio" name="mascota" id="paltamon"/>
-                <label class="tarjetas-mokemon" for="paltamon">
-                    <p>Paltamon</p>
-                    <img src="./assets/paltamon.png" alt="">    
-                </label>
-
-                <input type="radio" name="mascota" id="watemon"/>
-                <label class="tarjetas-mokemon" for="watemon">
-                    <p>Watemon</p>
-                    <img src="./assets/watemon.png" alt="">    
-                </label>
-
-                <input type="radio" name="mascota" id="fuemon"/>
-                <label class="tarjetas-mokemon" for="fuemon">
-                    <p>Fuemon</p>
-                    <img src="./assets/fuemon.png" alt="">    
-                </label>
-
+            <div id="contenedorTarjetas" class="tarjetas">
             </div>
 
             <button id="boton-mascota">Seleccionar</button>
@@ -44,10 +26,7 @@
 
             <h2 class="subtitulo">Elige tu ataque:</h2>
 
-            <div class="tarjetas-ataque">
-                <button class="btn-ataque fuego" id="boton-fuego">Fuego 🔥</button>
-                <button class="btn-ataque agua" id="boton-agua">Agua 💧</button>
-                <button class="btn-ataque tierra" id="boton-tierra">Tierra 🌱</button>
+            <div id="contenedorAtaques" class="tarjetas-ataque">
             </div>
 
             <div id="mensajes">
@@ -61,13 +40,13 @@
             <div class="ataques">
 
                 <div class="ataques-jugador">
-                    <p id="vidas-jugador">3</p>
+                    <p id="vidas-jugador">0</p>
                     <p id="mascota-jugador"></p>
                     <div id="ataques-del-jugador"></div>
                 </div>
 
                 <div class="ataques-enemigo">
-                    <p id="vidas-enemigo">3</p>
+                    <p id="vidas-enemigo">0</p>
                     <p id="mascota-enemigo"></p>
                     <div id="ataques-del-enemigo"></div>
                 </div>
