@@ -153,8 +153,39 @@ input:checked + label {
     align-items: center;
 }
 
-@media (max-width: 360px) {
+#ver-mapa {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#ver-mapa button {
+    width: 80px;
+    height: 40px;
+    border-radius: 20px;
+    background: transparent;
+    border: 2px solid white;
+    color: azure;
+    font-family: 'Orbitron', sans-serif;
+    margin-top: 30px;
+    border-color: #E98EAD;
+    margin: 5px 0;
+}
+
+#mapa {
+    border: 2px solid white;
+}
+
+@media (max-width: 560px) {
     .tarjetas, .tarjetas-ataque {
         flex-direction: column;
+    }
+}
+
+@media (max-width: 300px) {
+    #ver-mapa div {
+        display: flex;
+        align-items: center;
+        flex-direction:column;
     }
 }
