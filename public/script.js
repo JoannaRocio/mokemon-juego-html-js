@@ -21,7 +21,10 @@ const contenedorAtaques = document.getElementById('contenedorAtaques');
 const sectionVerMapa = document.getElementById('ver-mapa');
 const mapa = document.getElementById('mapa');
 
+let jugadorId = null;
+let enemigoId = null;
 let mokemones = [];
+let mokemonesEnemigos = [];
 let ataqueJugador = [];
 let ataqueEnemigo = [];
 let opcionDeMokemones;
@@ -60,7 +63,8 @@ mapa.width = anchoDelMapa;
 mapa.height = alturaQueBuscamos;
 
 class Mokemon {
-    constructor(nombre, foto, vida, fotoMapa) {
+    constructor(nombre, foto, vida, fotoMapa, id = null) {
+        this.id = id;
         this.nombre = nombre;
         this.foto = foto;
         this.vida = vida;
@@ -92,66 +96,40 @@ let watemon = new Mokemon('Watemon', './assets/watemon.png', 5, './assets/watemo
 
 let fuemon = new Mokemon('Fuemon', './assets/fuemon.png', 5, './assets/fuemon-head.png');
 
-let paltamonEnemigo = new Mokemon('Paltamon', './assets/paltamon.png', 5, './assets/paltamon-head.png', 80, 120);
-
-let watemonEnemigo = new Mokemon('Watemon', './assets/watemon.png', 5, './assets/watemon-head.png', 150, 95);
-
-let fuemonEnemigo = new Mokemon('Fuemon', './assets/fuemon.png', 5, './assets/fuemon-head.png', 200, 190);
-
-watemon.ataques.push(
+const WATEMON_ATAQUES = [
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🌱', id: 'boton-tierra' },
-)
+]
 
-watemonEnemigo.ataques.push(
-    { nombre: '💧', id: 'boton-agua' },
-    { nombre: '💧', id: 'boton-agua' },
-    { nombre: '💧', id: 'boton-agua' },
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🌱', id: 'boton-tierra' },
-)
+watemon.ataques.push(...WATEMON_ATAQUES);
 
-paltamon.ataques.push(
+const PALTAMON_ATAQUES = [
     { nombre: '🌱', id: 'boton-tierra' },
     { nombre: '🌱', id: 'boton-tierra' },
     { nombre: '🌱', id: 'boton-tierra' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🔥', id: 'boton-fuego' },
-    
-)
+]
 
-paltamonEnemigo.ataques.push(
-    { nombre: '🌱', id: 'boton-tierra' },
-    { nombre: '🌱', id: 'boton-tierra' },
-    { nombre: '🌱', id: 'boton-tierra' },
-    { nombre: '💧', id: 'boton-agua' },
-    { nombre: '🔥', id: 'boton-fuego' },
-    
-)
+paltamon.ataques.push(...PALTAMON_ATAQUES);
 
-fuemon.ataques.push(
+const FUEMON_ATAQUES = [
     { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🔥', id: 'boton-fuego' }, 
+    { nombre: '🔥', id: 'boton-fuego' },
     { nombre: '💧', id: 'boton-agua' },
     { nombre: '🌱', id: 'boton-tierra' },
-)
+]
 
-fuemonEnemigo.ataques.push(
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🔥', id: 'boton-fuego' },
-    { nombre: '🔥', id: 'boton-fuego' }, 
-    { nombre: '💧', id: 'boton-agua'},
-    { nombre: '🌱', id: 'boton-tierra'}
-)
+fuemon.ataques.push(...FUEMON_ATAQUES);
 
 mokemones.push(paltamon, watemon, fuemon);
 
 function iniciarJuego() {
-    
+
     sectionSeleccionarAtaque.style.display = 'none';
     sectionVerMapa.style.display = 'none';
 
@@ -163,14 +141,14 @@ function iniciarJuego() {
             <img src=${mokemon.foto} alt=${mokemon.nombre}>
         </label>
         `
-    contenedorTarjetas.innerHTML += opcionDeMokemones;
+        contenedorTarjetas.innerHTML += opcionDeMokemones;
 
-    inputWatemon = document.getElementById('Watemon');
-    inputPaltamon = document.getElementById('Paltamon');
-    inputFuemon = document.getElementById('Fuemon');
+        inputWatemon = document.getElementById('Watemon');
+        inputPaltamon = document.getElementById('Paltamon');
+        inputFuemon = document.getElementById('Fuemon');
 
     })
-    
+
     botonMascotaJugador.addEventListener('click', seleccionarMascotaJugador);
 
     botonReiniciar.addEventListener('click', reiniciarJuego);
@@ -185,16 +163,17 @@ function unirseAlJuego() {
             if (res.ok) {
                 res.text()
                     .then(function (respuesta) {
-                        console.log(respuesta);
+                        console.log(respuesta)
+                        jugadorId = respuesta
                     })
             }
         })
 }
 
 function seleccionarMascotaJugador() {
-    
+
     sectionSeleccionarMascota.style.display = 'none';
-    
+
     if (inputWatemon.checked) {
         spanMascotaJugador.innerHTML = inputWatemon.id;
         mascotaJugador = inputWatemon.id;
@@ -206,11 +185,26 @@ function seleccionarMascotaJugador() {
         mascotaJugador = inputFuemon.id;
     } else {
         alert('Selecciona una mascota');
+        return;
     }
+
+    seleccionarMokemon(mascotaJugador);
 
     extraerAtaques(mascotaJugador);
     sectionVerMapa.style.display = 'flex';
     iniciarMapa();
+}
+
+function seleccionarMokemon(mascotaJugador) {
+    fetch(`http://localhost:8080/mokemon/${jugadorId}`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            mokemon: mascotaJugador
+        })
+    });
 }
 
 function extraerAtaques(mascotaJugador) {
@@ -219,7 +213,7 @@ function extraerAtaques(mascotaJugador) {
         if (mascotaJugador === mokemones[i].nombre) {
             ataques = mokemones[i].ataques;
         }
-        
+
     }
     mostrarAtaques(ataques);
 }
@@ -232,10 +226,10 @@ function mostrarAtaques(ataques) {
         contenedorAtaques.innerHTML += ataquesMokemon;
     })
 
-     botonFuego = document.getElementById('boton-fuego');
-     botonAgua = document.getElementById('boton-agua');
-     botonTierra = document.getElementById('boton-tierra');
-     botones = document.querySelectorAll('.BAtaque');
+    botonFuego = document.getElementById('boton-fuego');
+    botonAgua = document.getElementById('boton-agua');
+    botonTierra = document.getElementById('boton-tierra');
+    botones = document.querySelectorAll('.BAtaque');
 }
 
 function secuenciaAtaque() {
@@ -248,16 +242,46 @@ function secuenciaAtaque() {
             } else if (e.target.textContent === '💧') {
                 ataqueJugador.push('AGUA');
                 boton.style.background = '#112f58';
-                boton.disabled = true ;
+                boton.disabled = true;
             } else {
                 ataqueJugador.push('TIERRA');
                 boton.style.background = '#112f58';
                 boton.disabled = true;
             }
-            ataqueAleatorioEnemigo();
+            if (ataqueJugador.length === 5) {
+                enviarAtaques();
+            }
+        })
+    })
+}
+
+function enviarAtaques() {
+    fetch(`http://localhost:8080/mokemon/${jugadorId}/ataques`, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            ataques: ataqueJugador
         })
     })
 
+    intervalo = setInterval(obtenerAtaques, 50);
+}
+
+function obtenerAtaques() {
+    fetch(`http://localhost:8080/mokemon/${enemigoId}/ataques`)
+        .then(function (res) {
+            if (res.ok) {
+                res.json()
+                    .then(function ({ ataques }) {
+                        if (ataques.length === 5) {
+                            ataqueEnemigo = ataques;
+                            combate();
+                        }
+                    })
+            }
+        })
 }
 
 function seleccionarMascotaEnemigo(enemigo) {
@@ -268,9 +292,9 @@ function seleccionarMascotaEnemigo(enemigo) {
 
 
 function ataqueAleatorioEnemigo() {
-    let ataqueAleatorio = aleatorio(0,ataquesMokemonEnemigo.length -1);
-    
-    if (ataqueAleatorio == 0 || ataqueAleatorio ==1) {
+    let ataqueAleatorio = aleatorio(0, ataquesMokemonEnemigo.length - 1);
+
+    if (ataqueAleatorio == 0 || ataqueAleatorio == 1) {
         ataqueEnemigo.push('FUEGO');
     } else if (ataqueAleatorio == 3 || ataqueAleatorio == 4) {
         ataqueEnemigo.push('AGUA');
@@ -292,9 +316,10 @@ function indexAmbosOponente(jugador, enemigo) {
 }
 
 function combate() {
-    
+    clearInterval(intervalo);
+
     for (let index = 0; index < ataqueJugador.length; index++) {
-        if(ataqueJugador[index] === ataqueEnemigo[index]) {
+        if (ataqueJugador[index] === ataqueEnemigo[index]) {
             indexAmbosOponente(index, index);
             crearMensaje("EMPATE");
         } else if (ataqueJugador[index] === 'FUEGO' && ataqueEnemigo[index] === 'TIERRA') {
@@ -302,7 +327,7 @@ function combate() {
             crearMensaje("GANASTE");
             victoriasJugador++;
             spanVidasJugador.innerHTML = victoriasJugador;
-        } else if (ataqueJugador[index] ==='AGUA' && ataqueEnemigo[index] === 'FUEGO') {
+        } else if (ataqueJugador[index] === 'AGUA' && ataqueEnemigo[index] === 'FUEGO') {
             indexAmbosOponente(index, index);
             crearMensaje("GANASTE");
             victoriasJugador++;
@@ -347,7 +372,7 @@ function crearMensaje(resultado) {
 
 function crearMensajeFinal(resultadoFinal) {
     sectionMensajes.innerHTML = resultadoFinal;
-    
+
     sectionReiniciar.style.display = 'block';
 }
 
@@ -371,14 +396,50 @@ function pintarCanvas() {
         mapa.height
     )
     mascotaJugadorObjeto.pintarMokemon();
-    paltamonEnemigo.pintarMokemon();
-    watemonEnemigo.pintarMokemon();
-    fuemonEnemigo.pintarMokemon();
-    if (mascotaJugadorObjeto.velocidadX !== 0 || mascotaJugadorObjeto.velocidadY !== 0) {
-        revisarColision(watemonEnemigo);
-        revisarColision(paltamonEnemigo);
-        revisarColision(fuemonEnemigo);
-    }
+
+    enviarPosicion(mascotaJugadorObjeto.x, mascotaJugadorObjeto.y);
+
+    mokemonesEnemigos.forEach(function (mokemon) {
+        mokemon.pintarMokemon();
+        revisarColision(mokemon);
+    })
+}
+
+function enviarPosicion(x, y) {
+    fetch(`http://localhost:8080/mokemon/${jugadorId}/posicion`, {
+        method: "post",
+        headers: {
+            "Content-type": "application/json"
+        },
+        body: JSON.stringify({
+            x,
+            y
+        })
+    })
+        .then(function (res) {
+            if (res.ok) {
+                res.json()
+                    .then(function ({ enemigos }) {
+                        console.log(enemigos)
+                        mokemonesEnemigos = enemigos.map(function (enemigo) {
+                            let mokemonEnemigo = null;
+                            const mokemonNombre = enemigo.mokemon.nombre || "";
+                            if (mokemonNombre === "Watemon") {
+                                mokemonEnemigo = new Mokemon('Watemon', './assets/watemon.png', 5, './assets/watemon-head.png', enemigo.id)
+                            } else if (mokemonNombre === "Paltamon") {
+                                mokemonEnemigo = new Mokemon('Paltamon', './assets/paltamon.png', 5, './assets/paltamon-head.png', enemigo.id);
+                            } else if (mokemonNombre === "Fuemon") {
+                                mokemonEnemigo = new Mokemon('Fuemon', './assets/fuemon.png', 5, './assets/fuemon-head.png', enemigo.id);
+                            }
+
+                            mokemonEnemigo.x = enemigo.x;
+                            mokemonEnemigo.y = enemigo.y;
+
+                            return mokemonEnemigo;
+                        })
+                    })
+            }
+        })
 }
 
 function moverDerecha() {
@@ -425,7 +486,7 @@ function iniciarMapa() {
 
     mascotaJugadorObjeto = obtenerObjetoMascota(mascotaJugador);
     intervalo = setInterval(pintarCanvas, 50);
-    
+
     window.addEventListener('keydown', sePresionoUnaTecla);
 
     window.addEventListener('keyup', detenerMovimiento);
@@ -445,16 +506,16 @@ function revisarColision(enemigo) {
     const derechaEnemigo = enemigo.x + enemigo.ancho;
     const izquierdaEnemigo = enemigo.x;
 
-    const arribaMascota = 
+    const arribaMascota =
         mascotaJugadorObjeto.y;
-    const abajoMascota = 
+    const abajoMascota =
         mascotaJugadorObjeto.y + mascotaJugadorObjeto.alto;
-    const derechaMascota = 
+    const derechaMascota =
         mascotaJugadorObjeto.x + mascotaJugadorObjeto.ancho;
-    const izquierdaMascota = 
+    const izquierdaMascota =
         mascotaJugadorObjeto.x;
 
-    if(
+    if (
         abajoMascota < arribaEnemigo ||
         arribaMascota > abajoEnemigo ||
         derechaMascota < izquierdaEnemigo ||
@@ -465,6 +526,8 @@ function revisarColision(enemigo) {
 
     detenerMovimiento();
     clearInterval(intervalo);
+
+    enemigoId = enemigo.id;
     sectionSeleccionarAtaque.style.display = 'flex';
     sectionVerMapa.style.display = 'none';
     seleccionarMascotaEnemigo(enemigo);
